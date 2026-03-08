@@ -1,0 +1,9 @@
+node_modules/
+dist/
+
+.DS_Store
+
+.blueprint/db.sqlite
+.blueprint/db.sqlite-shm
+.blueprint/db.sqlite-wal
+.blueprint/exports/
