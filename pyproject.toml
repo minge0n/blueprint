@@ -1,0 +1,19 @@
+[project]
+name = "blueprint-fastmcp"
+version = "0.1.0"
+description = "Python FastMCP rewrite of the Blueprint workflow server"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+  "fastmcp>=3.1.0",
+]
+
+[project.scripts]
+blueprint-fastmcp = "blueprint_fastmcp.__main__:main"
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+include = ["blueprint_fastmcp*"]

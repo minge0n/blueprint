@@ -1,5 +1,10 @@
 node_modules/
 dist/
+.venv/
+.opencode/node_modules/
+.opencode/bun.lock
+__pycache__/
+.vscode/
 
 .DS_Store
 

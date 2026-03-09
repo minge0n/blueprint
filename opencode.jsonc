@@ -1,0 +1,121 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "instructions": [
+    ".opencode/instructions.md",
+    "AGENTS.md"
+  ],
+  "agent": {
+    "blueprint-planner": {
+      "description": "Verifies that Blueprint work plans are executable and unblocked.",
+      "tools": {
+        "read": true,
+        "glob": true,
+        "grep": true,
+        "bash": false,
+        "edit": false,
+        "write": false
+      },
+      "prompt": "You are a practical work plan reviewer. You verify that plans are executable and references are valid. You are a blocker-finder, not a perfectionist."
+    },
+    "blueprint-builder": {
+      "description": "Implements Blueprint work in OpenCode with orchestration-oriented behavior.",
+      "tools": {
+        "read": true,
+        "glob": true,
+        "grep": true,
+        "bash": true,
+        "edit": true,
+        "write": true
+      },
+      "prompt": "You are Sisyphus adapted for Blueprint in OpenCode. Parse user intent carefully, do not implement unless the user explicitly wants implementation, prefer delegation when specialist roles fit, and keep work aligned with the Python FastMCP Blueprint workflow."
+    },
+    "blueprint-build": {
+      "description": "Implements Blueprint work items and can modify code.",
+      // "tools": ["read", "glob", "grep", "edit", "write", "bash"],
+      "tools": {
+        "read": true,
+        "glob": true,
+        "grep": true,
+        "bash": true,
+        "edit": true,
+        "write": true
+      },
+      "prompt": "You work in the Blueprint repository. Prefer the Python FastMCP implementation in blueprint_fastmcp/. Keep changes aligned with the approved Blueprint workflow and project instructions."
+    },
+    "blueprint-coordinator": {
+      "description": "Coordinates Blueprint workflow progress using the local Blueprint MCP server and OpenCode-native project instructions.",
+      "tools": {
+        "read": true,
+        "glob": true,
+        "grep": true,
+        "bash": true,
+        "edit": false,
+        "write": false
+      },
+      "prompt": "You coordinate Blueprint work in OpenCode. Always start with blueprint_resume or blueprint_get_context, prefer the Python FastMCP runtime, and use Blueprint MCP tools to understand current progress before choosing next actions."
+    },
+    "blueprint-worker": {
+      "description": "Executes a Blueprint function unit with checkpoint and lock discipline.",
+      "tools": {
+        "read": true,
+        "glob": true,
+        "grep": true,
+        "bash": true,
+        "edit": true,
+        "write": true
+      },
+      "prompt": "You implement a single Blueprint function unit in OpenCode. Begin with blueprint_resume, then use blueprint_get_available_work or your assigned FU, maintain checkpoint and lock state, and keep work scoped to the assigned unit."
+    },
+    "blueprint-skeptic": {
+      "description": "Reviews Blueprint plans and builds, files issues, and validates gates.",
+      "tools": {
+        "read": true,
+        "glob": true,
+        "grep": true,
+        "bash": true,
+        "edit": false,
+        "write": false
+      },
+      "prompt": "You review Blueprint state in OpenCode. Use blueprint_get_context, blueprint_list_issues, and approval gate tools to validate correctness. Do not implement fixes directly."
+    },
+    "blueprint-review": {
+      "description": "Reviews Blueprint behavior and code without modifying files.",
+      "tools": {
+        "read": true,
+        "glob": true,
+        "grep": true,
+        "bash": true,
+        "edit": false,
+        "write": false
+      },
+      "prompt": "You review the Blueprint repository for correctness, workflow fidelity, and OpenCode compatibility. Do not modify files."
+    }
+  },
+  "command": {
+    "blueprint-status": {
+      "description": "Summarize current Blueprint workflow status",
+      "template": "Use the local Blueprint MCP server to summarize the active feature, cycle, open issues, and next recommended action. Start with blueprint_resume and blueprint_get_context if needed."
+    },
+    "blueprint-test": {
+      "description": "Run Python FastMCP tests",
+      "template": "Run the Python FastMCP test suite using .venv and summarize failures if any."
+    },
+    "blueprint-product": {
+      "description": "Continue building Blueprint product parity",
+      "template": "Continue porting the Blueprint product to the Python FastMCP implementation, prioritizing feature parity with the TypeScript workflow engine and OpenCode usability."
+    }
+  },
+  "plugin": [".opencode/plugin.ts"],
+  "mcp": {
+    "blueprint": {
+      "type": "local",
+      "enabled": true,
+      "command": [".venv/bin/python", "-m", "blueprint_fastmcp"],
+      "environment": {
+        "BLUEPRINT_HOST": "127.0.0.1",
+        "BLUEPRINT_PORT": "8000",
+        "BLUEPRINT_MCP_PATH": "/mcp"
+      }
+    }
+  }
+}
